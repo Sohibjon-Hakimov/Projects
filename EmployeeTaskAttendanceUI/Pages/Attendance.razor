@@ -1,0 +1,64 @@
+@page "/attendance"
+
+@using EmployeeTaskAttendanceUI.Services
+@inject AttendanceService AttendanceService
+
+<h3>Attendance</h3>
+
+<button @onclick="MarkAttendance">Mark Attendance</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Attendance Id</th>
+            <th>Employee Id</th>
+            <th>Date</th>
+            <th>Is Present</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var attendance in Attendances)
+        {
+            <tr>
+                <td>@attendance.AttendanceId</td>
+                <td>@attendance.EmployeeId</td>
+                <td>@attendance.Date</td>
+                <td>@attendance.IsPresent</td>
+                <td>
+                    <button @onclick="() => EditAttendance(attendance.AttendanceId)">Edit</button>
+                    <button @onclick="() => DeleteAttendance(attendance.AttendanceId)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Attendance> Attendances = new List<Attendance>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Attendances = await AttendanceService.GetAttendancesAsync();
+    }
+
+    private async Task MarkAttendance()
+    {
+        // Logic to mark attendance
+    }
+
+    private async Task EditAttendance(int attendanceId)
+    {
+        // Logic to edit attendance
+    }
+
+    private async Task DeleteAttendance(int attendanceId)
+    {
+        var confirmDelete = await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete attendance with Id {attendanceId}?");
+        if (confirmDelete)
+        {
+            await AttendanceService.DeleteAttendanceAsync(attendanceId);
+            Attendances = await AttendanceService.GetAttendancesAsync();
+        }
+    }
+}

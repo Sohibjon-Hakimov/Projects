@@ -1,0 +1,62 @@
+@page "/taskassignments"
+
+@using EmployeeTaskAttendanceUI.Services
+@inject TaskAssignmentService TaskAssignmentService
+
+<h3>Task Assignments</h3>
+
+<button @onclick="CreateTaskAssignment">Add New Task Assignment</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Task Assignment Id</th>
+            <th>Employee Id</th>
+            <th>Task Id</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var taskAssignment in TaskAssignments)
+        {
+            <tr>
+                <td>@taskAssignment.TaskAssignmentId</td>
+                <td>@taskAssignment.EmployeeId</td>
+                <td>@taskAssignment.TaskId</td>
+                <td>
+                    <button @onclick="() => EditTaskAssignment(taskAssignment.TaskAssignmentId)">Edit</button>
+                    <button @onclick="() => DeleteTaskAssignment(taskAssignment.TaskAssignmentId)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<TaskAssignment> TaskAssignments = new List<TaskAssignment>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        TaskAssignments = await TaskAssignmentService.GetTaskAssignmentsAsync();
+    }
+
+    private async Task CreateTaskAssignment()
+    {
+        // Logic to add a new task assignment
+    }
+
+    private async Task EditTaskAssignment(int taskAssignmentId)
+    {
+        // Logic to edit an existing task assignment
+    }
+
+    private async Task DeleteTaskAssignment(int taskAssignmentId)
+    {
+        var confirmDelete = await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete task assignment with Id {taskAssignmentId}?");
+        if (confirmDelete)
+        {
+            await TaskAssignmentService.DeleteTaskAssignmentAsync(taskAssignmentId);
+            TaskAssignments = await TaskAssignmentService.GetTaskAssignmentsAsync();
+        }
+    }
+}

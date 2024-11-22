@@ -1,0 +1,66 @@
+@page "/employees"
+
+@using EmployeeTaskAttendanceUI.Services
+@inject EmployeeService EmployeeService
+
+<h3>Employees</h3>
+
+<button @onclick="CreateEmployee">Add New Employee</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Employee Id</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Position</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Employees)
+        {
+            <tr>
+                <td>@employee.EmployeeId</td>
+                <td>@employee.Name</td>
+                <td>@employee.Department</td>
+                <td>@employee.Position</td>
+                <td>
+                    <button @onclick="() => EditEmployee(employee.EmployeeId)">Edit</button>
+                    <button @onclick="() => DeleteEmployee(employee.EmployeeId)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Employee> Employees = new List<Employee>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Employees = await EmployeeService.GetEmployeesAsync();
+    }
+
+    private async Task CreateEmployee()
+    {
+        // Logic to add a new employee
+        // Navigate to a Create Employee page or display a form inline
+    }
+
+    private async Task EditEmployee(int employeeId)
+    {
+        // Logic to edit an existing employee
+        // This could involve navigation to an edit page or displaying an inline form
+    }
+
+    private async Task DeleteEmployee(int employeeId)
+    {
+        var confirmDelete = await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete employee with Id {employeeId}?");
+        if (confirmDelete)
+        {
+            await EmployeeService.DeleteEmployee(employeeId);
+            Employees = await EmployeeService.GetEmployeesAsync();
+        }
+    }
+}

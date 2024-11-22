@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "7ir1PFS1B+3ERkymJdm/CEvEwvpqFxTVq+8JEGFGGHY=",
+  "Source": "EmployeeTaskAttendance",
+  "BasePath": "_content/EmployeeTaskAttendance",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

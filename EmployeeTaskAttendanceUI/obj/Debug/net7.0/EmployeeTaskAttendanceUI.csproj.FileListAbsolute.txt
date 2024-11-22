@@ -1,0 +1,5 @@
+/Users/sohibjonhakimov/Projects/EmployeeTaskAttendanceUI/obj/Debug/net7.0/EmployeeTaskAttendanceUI.GeneratedMSBuildEditorConfig.editorconfig
+/Users/sohibjonhakimov/Projects/EmployeeTaskAttendanceUI/obj/Debug/net7.0/EmployeeTaskAttendanceUI.AssemblyInfoInputs.cache
+/Users/sohibjonhakimov/Projects/EmployeeTaskAttendanceUI/obj/Debug/net7.0/EmployeeTaskAttendanceUI.AssemblyInfo.cs
+/Users/sohibjonhakimov/Projects/EmployeeTaskAttendanceUI/obj/Debug/net7.0/EmployeeTaskAttendanceUI.csproj.CoreCompileInputs.cache
+/Users/sohibjonhakimov/Projects/EmployeeTaskAttendanceUI/obj/Debug/net7.0/EmployeeTaskAttendanceUI.MvcApplicationPartsAssemblyInfo.cache

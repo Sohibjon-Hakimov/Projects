@@ -1,0 +1,62 @@
+@page "/departments"
+
+@using EmployeeTaskAttendanceUI.Services
+@inject DepartmentService DepartmentService
+
+<h3>Departments</h3>
+
+<button @onclick="CreateDepartment">Add New Department</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Department Id</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var department in Departments)
+        {
+            <tr>
+                <td>@department.DepartmentId</td>
+                <td>@department.Name</td>
+                <td>
+                    <button @onclick="() => EditDepartment(department.DepartmentId)">Edit</button>
+                    <button @onclick="() => DeleteDepartment(department.DepartmentId)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Department> Departments = new List<Department>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Departments = await DepartmentService.GetDepartments();
+    }
+
+    private async Task CreateDepartment()
+    {
+        // Logic to add a new department, can include showing a form to the user
+        // Navigate to a Create Department page or display a form inline
+    }
+
+    private async Task EditDepartment(int departmentId)
+    {
+        // Logic to edit an existing department
+        // This could involve navigation to an edit page or displaying an inline form
+    }
+
+    private async Task DeleteDepartment(int departmentId)
+    {
+        var confirmDelete = await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete department with Id {departmentId}?");
+        if (confirmDelete)
+        {
+            await DepartmentService.DeleteDepartment(departmentId);
+            Departments = await DepartmentService.GetDepartments();
+        }
+    }
+}

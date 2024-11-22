@@ -1,0 +1,60 @@
+@page "/roles"
+
+@using EmployeeTaskAttendanceUI.Services
+@inject RoleService RoleService
+
+<h3>Roles</h3>
+
+<button @onclick="CreateRole">Add New Role</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Role Id</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Roles)
+        {
+            <tr>
+                <td>@role.RoleId</td>
+                <td>@role.Name</td>
+                <td>
+                    <button @onclick="() => EditRole(role.RoleId)">Edit</button>
+                    <button @onclick="() => DeleteRole(role.RoleId)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Role> Roles = new List<Role>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Roles = await RoleService.GetRolesAsync();
+    }
+
+    private async Task CreateRole()
+    {
+        // Logic to add a new role
+    }
+
+    private async Task EditRole(int roleId)
+    {
+        // Logic to edit an existing role
+    }
+
+    private async Task DeleteRole(int roleId)
+    {
+        var confirmDelete = await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete role with Id {roleId}?");
+        if (confirmDelete)
+        {
+            await RoleService.DeleteRoleAsync(roleId);
+            Roles = await RoleService.GetRolesAsync();
+        }
+    }
+}

@@ -1,0 +1,62 @@
+@page "/leaverequests"
+
+@using EmployeeTaskAttendanceUI.Services
+@inject LeaveRequestService LeaveRequestService
+
+<h3>Leave Requests</h3>
+
+<button @onclick="CreateLeaveRequest">Add New Leave Request</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Leave Request Id</th>
+            <th>Employee Id</th>
+            <th>Reason</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var leaveRequest in LeaveRequests)
+        {
+            <tr>
+                <td>@leaveRequest.LeaveRequestId</td>
+                <td>@leaveRequest.EmployeeId</td>
+                <td>@leaveRequest.Reason</td>
+                <td>
+                    <button @onclick="() => EditLeaveRequest(leaveRequest.LeaveRequestId)">Edit</button>
+                    <button @onclick="() => DeleteLeaveRequest(leaveRequest.LeaveRequestId)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<LeaveRequest> LeaveRequests = new List<LeaveRequest>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        LeaveRequests = await LeaveRequestService.GetLeaveRequestsAsync();
+    }
+
+    private async Task CreateLeaveRequest()
+    {
+        // Logic to add a new leave request
+    }
+
+    private async Task EditLeaveRequest(int leaveRequestId)
+    {
+        // Logic to edit an existing leave request
+    }
+
+    private async Task DeleteLeaveRequest(int leaveRequestId)
+    {
+        var confirmDelete = await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete leave request with Id {leaveRequestId}?");
+        if (confirmDelete)
+        {
+            await LeaveRequestService.DeleteLeaveRequestAsync(leaveRequestId);
+            LeaveRequests = await LeaveRequestService.GetLeaveRequestsAsync();
+        }
+    }
+}

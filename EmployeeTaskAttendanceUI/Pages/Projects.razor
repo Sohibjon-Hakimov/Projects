@@ -1,0 +1,60 @@
+@page "/projects"
+
+@using EmployeeTaskAttendanceUI.Services
+@inject ProjectService ProjectService
+
+<h3>Projects</h3>
+
+<button @onclick="CreateProject">Add New Project</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Project Id</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var project in Projects)
+        {
+            <tr>
+                <td>@project.ProjectId</td>
+                <td>@project.Name</td>
+                <td>
+                    <button @onclick="() => EditProject(project.ProjectId)">Edit</button>
+                    <button @onclick="() => DeleteProject(project.ProjectId)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Project> Projects = new List<Project>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Projects = await ProjectService.GetProjectsAsync();
+    }
+
+    private async Task CreateProject()
+    {
+        // Logic to add a new project
+    }
+
+    private async Task EditProject(int projectId)
+    {
+        // Logic to edit an existing project
+    }
+
+    private async Task DeleteProject(int projectId)
+    {
+        var confirmDelete = await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete project with Id {projectId}?");
+        if (confirmDelete)
+        {
+            await ProjectService.DeleteProjectAsync(projectId);
+            Projects = await ProjectService.GetProjectsAsync();
+        }
+    }
+}
